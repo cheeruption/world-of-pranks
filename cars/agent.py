@@ -134,7 +134,13 @@ class SimpleCarAgent(Agent):
 
         # запомним всё, что только можно: мы хотим учиться на своих ошибках
         self.sensor_data_history.append(sensor_info)
+        ###############
+        print('sensor:', type(self.sensor_data_history),len(self.sensor_data_history))
+        ###############
         self.chosen_actions_history.append(best_action)
+        ###############
+        print('actions:', type(self.chosen_actions_history),len(self.chosen_actions_history))
+        ###############
         self.reward_history.append(0.0)  # мы пока не знаем, какая будет награда, это
         # откроется при вызове метода receive_feedback внешним миром
 
