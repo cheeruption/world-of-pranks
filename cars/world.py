@@ -26,13 +26,13 @@ class World(metaclass=ABCMeta):
 
 
 class SimpleCarWorld(World):
-    COLLISION_PENALTY = 3 # выберите сами
-    HEADING_REWARD =  2# выберите сами
-    WRONG_HEADING_PENALTY = 10  # выберите сами
-    IDLENESS_PENALTY =  2# выберите сами
-    SPEEDING_PENALTY =  1# выберите сами
-    MIN_SPEED =  3# выберите сами
-    MAX_SPEED =  100# выберите сами
+    COLLISION_PENALTY = 0 * 1e0
+    HEADING_REWARD = 0 * 1e-1
+    WRONG_HEADING_PENALTY = 0 * 1e0
+    IDLENESS_PENALTY = 32 * 1e-1
+    SPEEDING_PENALTY = 32 * 1e-1
+    MIN_SPEED = 0.1 * 1e0
+    MAX_SPEED = 0.7 * 1e0
 
     size = (800, 600)
 
@@ -145,6 +145,7 @@ class SimpleCarWorld(World):
         for i, agent in enumerate(self.agents):
             try:
                 filename = "network_config_agent_%d_layers_%s.txt" % (i, "_".join(map(str, agent.neural_net.sizes)))
+                #filename = "network_config_agent_0_layers_9_1.txt"
                 agent.to_file(filename)
                 print("Saved agent parameters to '%s'" % filename)
             except AttributeError:
@@ -307,8 +308,8 @@ if __name__ == "__main__":
     from HW_3.cars.physics import SimplePhysics
     from HW_3.cars.track import generate_map
 
-    np.random.seed(3)
-    random.seed(3)
+    np.random.seed(15)
+    random.seed(15)
     m = generate_map(8, 5, 3, 3)
     SimpleCarWorld(1, m, SimplePhysics, SimpleCarAgent, timedelta=0.2).run()
 
