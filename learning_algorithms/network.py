@@ -84,6 +84,7 @@ class Network(object):
         Тестирование полезно для мониторинга процесса обучения,
         но может существенно замедлить работу программы.
         """
+        cost_history = []
 
         if test_data is not None: n_test = len(test_data)
         n = len(training_data)
@@ -95,6 +96,7 @@ class Network(object):
                 for k in range(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
+                self.cost_fun(
             if test_data is not None:
                 success_tests = self.evaluate(test_data)
                 print("Эпоха {0}: {1} / {2}".format(
@@ -130,7 +132,12 @@ class Network(object):
         ``nabla_b`` и ``nabla_w`` -- послойные списки массивов ndarray,
         такие же, как self.biases и self.weights соответственно.
         """
-
+        
+        #ДОБАВЛЕНИЕ ШЛЯПЫ########################################################################################
+        cost_history = []
+        self.cost_fun(activations[-1], y)
+        
+        #######################################################################################################
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
 
@@ -186,3 +193,13 @@ class Network(object):
         целевой функции по активациям выходного слоя.
         """
         return output_activations - y
+        
+    def plot_cost_fun(self, cost_history):
+        fig = plt.figure(figsize=(15,5))
+        plt.plot(cost_history)
+        plt.show()
+        
+    def cost_fun(self, output_activations, y):
+        J = (output_activations - y)**2
+        return np.mean(J,axis=0)
+        
