@@ -24,7 +24,6 @@ class World(metaclass=ABCMeta):
     def run(self):
         pass
 
-
 class SimpleCarWorld(World):
     COLLISION_PENALTY = 0 * 1e0
     HEADING_REWARD = 0 * 1e-1

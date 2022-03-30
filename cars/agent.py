@@ -86,6 +86,7 @@ class SimpleCarAgent(Agent):
 
     def show_weights(self):
         params = self.neural_net.sizes, self.neural_net.weights, self.neural_net.biases
+        print('agent-py-87', params)
         #np.set_printoptions(threshold=np.nan)
         np.set_printoptions(threshold=sys.maxsize)
         return repr(params)
@@ -183,4 +184,4 @@ class SimpleCarAgent(Agent):
             X_train = np.concatenate([self.sensor_data_history, self.chosen_actions_history], axis=1)
             y_train = self.reward_history
             train_data = [(x[:, np.newaxis], y) for x, y in zip(X_train, y_train)]
-            self.neural_net.SGD(training_data=train_data, epochs=15, mini_batch_size=train_every, eta=0.05)
+            self.neural_net.SGD(training_data=train_data, epochs=15, mini_batch_size=train_every, eta=0.005)
