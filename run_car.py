@@ -5,6 +5,8 @@ from cars.physics import SimplePhysics
 from cars.track import generate_map
 import numpy as np
 import random
+import matplotlib.pyplot as plt
+
 
 import argparse
 
@@ -33,3 +35,8 @@ if args.filename:
         w.run(steps)
 else:
     SimpleCarWorld(1, m, SimplePhysics, SimpleCarAgent, timedelta=0.2).run(steps)
+
+def plot_cost_fun(cost_history):
+    fig = plt.figure(figsize=(15,5))
+    plt.plot(agent.neural_net.cost_history)
+    plt.show()

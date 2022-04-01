@@ -10,7 +10,12 @@
 
 import random
 import numpy as np
+import matplotlib.pyplot as plt
 
+def plot_cost_fun(cost_history):
+    fig = plt.figure(figsize=(15,5))
+    plt.plot(cost_history)
+    plt.show()
 
 #### Вспомогательные функции
 def sigmoid(z):
@@ -43,7 +48,7 @@ class Network(object):
         Параметры output_function и output_derivative задают активационную функцию
         нейрона выходного слоя и её производную.
         """
-
+        self.cost_history = []
         self.num_layers = len(sizes)
         self.sizes = sizes
         self.biases = [np.random.randn(y, 1) for y in sizes[1:]]
@@ -96,13 +101,13 @@ class Network(object):
                 for k in range(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
                 self.update_mini_batch(mini_batch, eta)
-                self.cost_fun(
             if test_data is not None:
                 success_tests = self.evaluate(test_data)
                 print("Эпоха {0}: {1} / {2}".format(
                     j, success_tests, n_test))
             else:
                 print("Эпоха {0} завершена".format(j))
+                plot_cost_fun(self.cost_history)
         if test_data is not None:
             return success_tests / n_test
 
@@ -133,11 +138,7 @@ class Network(object):
         такие же, как self.biases и self.weights соответственно.
         """
         
-        #ДОБАВЛЕНИЕ ШЛЯПЫ########################################################################################
-        cost_history = []
-        self.cost_fun(activations[-1], y)
         
-        #######################################################################################################
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
 
@@ -156,7 +157,7 @@ class Network(object):
         zs.append(z)
         output = self.output_function(z)
         activations.append(output)
-
+        self.cost_history.append(self.cost_fun(activations[-1], y)) #рассчитываем значение целевой функции на выходном слое
         # обратное распространение
         delta = self.cost_derivative(activations[-1], y) * self.output_derivative(zs[-1])
         nabla_b[-1] = delta
@@ -193,11 +194,6 @@ class Network(object):
         целевой функции по активациям выходного слоя.
         """
         return output_activations - y
-        
-    def plot_cost_fun(self, cost_history):
-        fig = plt.figure(figsize=(15,5))
-        plt.plot(cost_history)
-        plt.show()
         
     def cost_fun(self, output_activations, y):
         J = (output_activations - y)**2
