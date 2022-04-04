@@ -12,10 +12,11 @@ import random
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_cost_fun(cost_history):
-    fig = plt.figure(figsize=(15,5))
-    plt.plot(cost_history)
-    plt.show()
+#def plot_cost_fun(cost_history):
+#    fig, ax = plt.subplots()
+#    fig = plt.figure(figsize=(15,5))
+#    plt.plot(cost_history)
+#    plt.show()
 
 #### Вспомогательные функции
 def sigmoid(z):
@@ -94,20 +95,27 @@ class Network(object):
         if test_data is not None: n_test = len(test_data)
         n = len(training_data)
         success_tests = 0
+        fig, ax = plt.subplots()
+
         for j in range(epochs):
             random.shuffle(training_data)
             mini_batches = [
                 training_data[k:k + mini_batch_size]
                 for k in range(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta)
+                self.update_mini_batch(mini_batch, eta/(len(cost_history)+1))
             if test_data is not None:
                 success_tests = self.evaluate(test_data)
                 print("Эпоха {0}: {1} / {2}".format(
                     j, success_tests, n_test))
             else:
                 print("Эпоха {0} завершена".format(j))
-                plot_cost_fun(self.cost_history)
+                ax.cla() #один цвет
+                plt.plot(self.cost_history)
+                plt.pause(0.5)
+
+
+                
         if test_data is not None:
             return success_tests / n_test
 
