@@ -34,7 +34,7 @@ class SimpleCarAgent(Agent):
         self._rays = 5 # выберите число лучей ладара; например, 5
         # here +2 is for 2 inputs from elements of Action that we are trying to predict
         ########## ВОПРОС: где связь между лучами и свойствами агента????? 
-        self.neural_net = Network([self.rays + 4,16, 4,
+        self.neural_net = Network([self.rays + 4,(self.rays + 4) * 2,
                                    # внутренние слои сети: выберите, сколько и в каком соотношении вам нужно
                                    # например, (self.rays + 4) * 2 или просто число
                                    1],
@@ -184,4 +184,4 @@ class SimpleCarAgent(Agent):
             X_train = np.concatenate([self.sensor_data_history, self.chosen_actions_history], axis=1)
             y_train = self.reward_history
             train_data = [(x[:, np.newaxis], y) for x, y in zip(X_train, y_train)]
-            self.neural_net.SGD(training_data=train_data, epochs=15, mini_batch_size=train_every, eta=1)
+            self.neural_net.SGD(training_data=train_data, epochs=15, mini_batch_size=train_every, eta=0.3)
