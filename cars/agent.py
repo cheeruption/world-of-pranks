@@ -7,7 +7,7 @@ import numpy as np
 
 from cars.utils import Action
 from learning_algorithms.network import Network
-
+from run_car import steps
 
 class Agent(metaclass=ABCMeta):
     @property
@@ -152,7 +152,7 @@ class SimpleCarAgent(Agent):
 
         return best_action
 
-    def receive_feedback(self, reward, train_every=50, reward_depth=7):
+    def receive_feedback(self, reward, train_every=0.2*steps, reward_depth=7):
         """
         Получить реакцию на последнее решение, принятое сетью, и проанализировать его
         :param reward: оценка внешним миром наших действий
