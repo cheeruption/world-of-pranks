@@ -103,7 +103,8 @@ class Network(object):
                 training_data[k:k + mini_batch_size]
                 for k in range(0, n, mini_batch_size)]
             for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta/(0.1*len(cost_history)+1))
+                #self.update_mini_batch(mini_batch, eta/(0.1*len(cost_history)+1))
+                self.update_mini_batch(mini_batch, eta)
             if test_data is not None:
                 success_tests = self.evaluate(test_data)
                 print("Эпоха {0}: {1} / {2}".format(
